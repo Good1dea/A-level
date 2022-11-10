@@ -5,7 +5,6 @@ import java.util.Random;
 
 public class CarService {
 
-    private Car car = new Car();
     private Random random = new Random();
     private final String[] manufacturers = {"Suzuki", "Audi", "ZAZ", "Ford", "Toyota", "Fiat", "Volvo", "Tesla",
             "Volkswagen", "Subaru", "Dodge", "Ferrari", "Cadillac", "BMW", "Bugatti", "Jaguar"};
@@ -13,6 +12,7 @@ public class CarService {
     private final String[] colors = {"green", "red", "blue", "black", "grey", "white", "yellow","turquoise"};
 
     public Car create(){
+       Car car = new Car();
        car.setManufacturer(manufacturers[random.nextInt(0, manufacturers.length)]);
        car.setEngine(engines[random.nextInt(0, engines.length)]);
        car.setColor(colors[random.nextInt(0, colors.length)]);
