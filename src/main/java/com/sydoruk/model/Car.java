@@ -5,15 +5,15 @@ import java.util.Random;
 public class Car {
 
     private String manufacturer;
-    private String engine;
-    private String color;
+    private Engine engine;
+    private Color color;
     private int count;
     private int price;
 
     public Car(){
     }
 
-    public Car(String manufacturer, String engine, String color) {
+    public Car(String manufacturer, Engine engine, Color color) {
         this.manufacturer = manufacturer;
         this.engine = engine;
         this.color = color;
@@ -30,19 +30,19 @@ public class Car {
         return manufacturer;
     }
 
-    public void setEngine(final String engine) {
+    public void setEngine(final Engine engine) {
         this.engine = engine;
     }
 
-    public String getEngine() {
+    public Engine getEngine() {
         return engine;
     }
 
-    public void setColor(final String color) {
+    public void setColor(final Color color) {
         this.color = color;
     }
 
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 
