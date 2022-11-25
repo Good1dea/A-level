@@ -3,13 +3,21 @@ package com.sydoruk.service;
 import com.sydoruk.model.Car;
 import com.sydoruk.model.Color;
 import com.sydoruk.model.Engine;
+import com.sydoruk.repository.CarArrayRepository;
+
+import java.util.Arrays;
 import java.util.Random;
 
 public class CarService {
 
+    private final CarArrayRepository carArrayRepository;
     private Random random = new Random();
-    private final String[] manufacturers = {"Suzuki", "Audi", "ZAZ", "Ford", "Toyota", "Fiat", "Volvo", "Tesla",
+        private final String[] manufacturers = {"Suzuki", "Audi", "ZAZ", "Ford", "Toyota", "Fiat", "Volvo", "Tesla",
             "Volkswagen", "Subaru", "Dodge", "Ferrari", "Cadillac", "BMW", "Bugatti", "Jaguar"};
+
+    public CarService(final CarArrayRepository carArrayRepository) {
+        this.carArrayRepository = carArrayRepository;
+    }
 
     public static void check(Car car){
         if(car.getCount() >= 1 && car.getEngine().getPower() > 200){
@@ -31,6 +39,7 @@ public class CarService {
        car.setColor(Color.randomColor());
        car.setCount(random.nextInt(2));
        car.setPrice(random.nextInt(1000, 100001));
+       carArrayRepository.save(car);
        return car;
     }
 
@@ -41,4 +50,27 @@ public class CarService {
        System.out.println("Count: " + car.getCount());
        System.out.println("Price: " + car.getPrice() + " $");
    }
+
+    public void printAll() {
+        final Car[] all = carArrayRepository.getAll();
+        System.out.println(Arrays.toString(all));
+    }
+
+    public Car[] getAll() {
+        return carArrayRepository.getAll();
+    }
+
+    public Car find(final String id) {
+        if (id == null || id.isEmpty()) {
+            return null;
+        }
+        return carArrayRepository.getById(id);
+    }
+
+    public void delete(final String id) {
+        if (id == null || id.isEmpty()) {
+            return;
+        }
+        carArrayRepository.delete(id);
+    }
 }
