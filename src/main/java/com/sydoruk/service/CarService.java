@@ -4,6 +4,7 @@ import com.sydoruk.model.Car;
 import com.sydoruk.model.Color;
 import com.sydoruk.model.Engine;
 import com.sydoruk.repository.CarArrayRepository;
+import com.sydoruk.util.RandomGenerator;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -11,8 +12,8 @@ import java.util.Random;
 public class CarService {
 
     private final CarArrayRepository carArrayRepository;
-    private Random random = new Random();
-        private final String[] manufacturers = {"Suzuki", "Audi", "ZAZ", "Ford", "Toyota", "Fiat", "Volvo", "Tesla",
+    private final Random random = new Random();
+    private final String[] manufacturers = {"Suzuki", "Audi", "ZAZ", "Ford", "Toyota", "Fiat", "Volvo", "Tesla",
             "Volkswagen", "Subaru", "Dodge", "Ferrari", "Cadillac", "BMW", "Bugatti", "Jaguar"};
 
     public CarService(final CarArrayRepository carArrayRepository) {
@@ -20,6 +21,9 @@ public class CarService {
     }
 
     public static void check(Car car){
+        if(car == null){
+            return;
+        }
         if(car.getCount() >= 1 && car.getEngine().getPower() > 200){
             System.out.println("The car is ready for sale");
         } else if (car.getCount() < 1 && car.getEngine().getPower() > 200){
@@ -31,7 +35,19 @@ public class CarService {
         }
     }
 
-    public Car create(){
+    public int create(RandomGenerator rand) {
+        final int counter = rand.random();
+        if (counter == 0) {
+            return -1;
+        } else {
+            for (int i = 1; i <= counter; i++) {
+                print(createCar());
+            }
+            return counter;
+        }
+    }
+
+    public Car createCar(){
        Car car = new Car();
        Engine engine = new Engine();
        car.setManufacturer(manufacturers[random.nextInt(0, manufacturers.length)]);
@@ -44,6 +60,9 @@ public class CarService {
     }
 
    public void print(Car car){
+       if(car == null){
+           return;
+       }
        System.out.println("Manufacturer: " + car.getManufacturer());
        System.out.println("Engine: " + car.getEngine().toString());
        System.out.println("Color: " + car.getColor());
@@ -68,9 +87,8 @@ public class CarService {
     }
 
     public void delete(final String id) {
-        if (id == null || id.isEmpty()) {
-            return;
+        if (id != null && !id.isEmpty()) {
+           carArrayRepository.delete(id);
         }
-        carArrayRepository.delete(id);
     }
 }
