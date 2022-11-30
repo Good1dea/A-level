@@ -3,23 +3,25 @@ package com.sydoruk.model;
 import java.util.UUID;
 import java.util.Random;
 
-public class Car {
+public abstract class Car {
 
-    private String manufacturer;
-    private Engine engine;
-    private Color color;
-    private int count;
-    private int price;
-    private String id;
+    protected String manufacturer;
+    protected Engine engine;
+    protected Color color;
+    protected Type type;
+    protected int count;
+    protected int price;
+    protected String id;
 
     public Car(){
     }
 
-    public Car(String manufacturer, Engine engine, Color color) {
+    public Car(String manufacturer, Engine engine, Color color, Type type) {
         this.id = UUID.randomUUID().toString();
         this.manufacturer = manufacturer;
         this.engine = engine;
         this.color = color;
+        this.type = type;
         count = 1;
         Random random = new Random();
         price = random.nextInt();
@@ -51,6 +53,14 @@ public class Car {
 
     public Color getColor() {
         return color;
+    }
+
+    public void setType(final Type type) {
+        this.type = type;
+    }
+
+    public Type getType() {
+        return type;
     }
 
     public void setCount(final int count) {

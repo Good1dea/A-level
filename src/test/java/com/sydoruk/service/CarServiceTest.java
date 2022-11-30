@@ -1,6 +1,7 @@
 package com.sydoruk.service;
 
 import com.sydoruk.model.Car;
+import com.sydoruk.model.PassengerCar;
 import com.sydoruk.repository.CarArrayRepository;
 import com.sydoruk.util.RandomGenerator;
 import org.junit.jupiter.api.Assertions;
@@ -34,18 +35,23 @@ class CarServiceTest {
     }
 
     @Test
-    void createCarNotNull() {
-        Assertions.assertNotNull(target.createCar());
+    void createPassengerCarNotNull() {
+        Assertions.assertNotNull(target.createPassengerCar());
+    }
+
+    @Test
+    void createTruckNotNull() {
+        Assertions.assertNotNull(target.createTruck());
     }
 
     @Test
     void printInputNull() {
-        Assertions.assertDoesNotThrow(() -> target.print(null));
+        Assertions.assertDoesNotThrow(() -> target.printPass(null));
     }
 
     @Test
     void printNotThrow() {
-        Assertions.assertDoesNotThrow(() -> target.print(target.createCar()));
+        Assertions.assertDoesNotThrow(() -> target.printPass(target.createPassengerCar()));
     }
 
     @Test
@@ -60,7 +66,7 @@ class CarServiceTest {
 
     @Test
     void checkNotThrow() {
-        Assertions.assertDoesNotThrow(() -> CarService.check(target.createCar()));
+        Assertions.assertDoesNotThrow(() -> CarService.check(target.createPassengerCar()));
     }
 
     @Test
@@ -85,7 +91,7 @@ class CarServiceTest {
 
     @Test
     void findEquals() {
-        final Car expected = new Car();
+        final PassengerCar expected = new PassengerCar();
         String id = "123";
         Mockito.when(repository.getById("123")).thenReturn(expected);
         final Car actual = target.find(id);
