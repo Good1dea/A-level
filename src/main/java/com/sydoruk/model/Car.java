@@ -1,5 +1,6 @@
 package com.sydoruk.model;
 
+import java.util.UUID;
 import java.util.Random;
 
 public class Car {
@@ -9,17 +10,23 @@ public class Car {
     private Color color;
     private int count;
     private int price;
+    private String id;
 
     public Car(){
     }
 
     public Car(String manufacturer, Engine engine, Color color) {
+        this.id = UUID.randomUUID().toString();
         this.manufacturer = manufacturer;
         this.engine = engine;
         this.color = color;
         count = 1;
         Random random = new Random();
         price = random.nextInt();
+    }
+
+    public String getId() {
+        return id;
     }
 
     public void setManufacturer(final String manufacturer) {
