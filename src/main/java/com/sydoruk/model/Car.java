@@ -1,9 +1,10 @@
 package com.sydoruk.model;
 
+import java.util.Objects;
 import java.util.UUID;
 import java.util.Random;
 
-public abstract class Car {
+public abstract class Car implements CountRestore {
 
     protected String manufacturer;
     protected Engine engine;
@@ -13,7 +14,8 @@ public abstract class Car {
     protected int price;
     protected String id;
 
-    public Car(){
+    public Car() {
+        this.id = UUID.randomUUID().toString();
     }
 
     public Car(String manufacturer, Engine engine, Color color, Type type) {
@@ -85,5 +87,18 @@ public abstract class Car {
 
     public int getPrice() {
         return price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return Objects.equals(getId(), car.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getManufacturer(),getColor());
     }
 }

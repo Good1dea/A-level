@@ -18,69 +18,60 @@ public class CarService {
         this.carArrayRepository = carArrayRepository;
     }
 
-    public PassengerCar createPassengerCar() {
-        PassengerCar passengerCar = new PassengerCar();
+    public Car createCar(final Type type) {
+        Car car = null;
+        if (type == Type.CAR) {
+            car = new PassengerCar();
+            ((PassengerCar)car).setPassengerCount(random.nextInt(9));
+        } else if (type == Type.TRUCK) {
+            car = new Truck();
+            ((Truck)car).setLoadCapacity(random.nextInt(500, 10000));
+        }
         Engine engine = new Engine();
-        passengerCar.setType(Type.CAR);
-        passengerCar.setManufacturer(manufacturers[random.nextInt(0, manufacturers.length)]);
-        passengerCar.setEngine(engine);
-        passengerCar.setColor(Color.randomColor());
-        passengerCar.setPrice(random.nextInt(1000, 100001));
-        passengerCar.setPassengerCount(random.nextInt(9));
-        passengerCar.restore();
-        carArrayRepository.save(passengerCar);
-        return passengerCar;
+        car.setType(type);
+        car.setEngine(engine);
+        car.setManufacturer(manufacturers[random.nextInt(0, manufacturers.length)]);
+        car.setColor(Color.randomColor());
+        car.setPrice(random.nextInt(1000, 100001));
+        car.restore();
+        carArrayRepository.save(car);
+        return car;
     }
 
-    public Truck createTruck() {
-        Truck truck = new Truck();
-        Engine engine = new Engine();
-        truck.setType(Type.TRUCK);
-        truck.setManufacturer(manufacturers[random.nextInt(0, manufacturers.length)]);
-        truck.setEngine(engine);
-        truck.setColor(Color.randomColor());
-        truck.setPrice(random.nextInt(1000, 100001));
-        truck.setLoadCapacity(random.nextInt(500, 10000));
-        truck.restore();
-        carArrayRepository.save(truck);
-        return truck;
-    }
-
-    public void printPass(PassengerCar passengerCar) {
-        if (passengerCar == null) {
+    public void printCar(Car car) {
+        if (car == null) {
             return;
         }
-        System.out.println("Manufacturer: " + passengerCar.getManufacturer());
-        System.out.println("Type: " + passengerCar.getType());
-        System.out.println("Engine: " + passengerCar.getEngine().toString());
-        System.out.println("Color: " + passengerCar.getColor());
-        System.out.println("Passengers: " + passengerCar.getPassengerCount());
-        System.out.println("Price: " + passengerCar.getPrice() + " $");
+        System.out.println("Manufacturer: " + car.getManufacturer());
+        System.out.println("Type: " + car.getType());
+        System.out.println("Engine: " + car.getEngine().toString());
+        System.out.println("Color: " + car.getColor());
+        if(car.getType() == Type.CAR){
+            System.out.println("Passengers: " + ((PassengerCar)car).getPassengerCount());
+        } else {
+            System.out.println("Load capacity: " + ((Truck)car).getLoadCapacity());
+        }
+        System.out.println("Price: " + car.getPrice() + " $");
         System.out.println();
     }
 
-    public void printTruck(Truck truck) {
-        if (truck == null) {
-            return;
-        }
-        System.out.println("Manufacturer: " + truck.getManufacturer());
-        System.out.println("Type: " + truck.getType());
-        System.out.println("Engine: " + truck.getEngine().toString());
-        System.out.println("Color: " + truck.getColor());
-        System.out.println("Load capacity: " + truck.getLoadCapacity());
-        System.out.println("Price: " + truck.getPrice() + " $");
-        System.out.println();
+    public boolean carEquals(Car carFirst, Car carSecond) {
+        if (carFirst == null || carSecond == null) return false;
+        if (carFirst == carSecond) return true;
+        if (carSecond.getType() != carFirst.getType()) return false;
+        if (carFirst.hashCode() != carSecond.hashCode()) return false;
+        return carFirst.equals(carSecond);
     }
 
-    public static void check(PassengerCar passengerCar) {
-        if (passengerCar == null) {
+    public static void check(Car car) {
+        if (car == null) {
             return;
         }
-        if (passengerCar.getCount() >= 1 && passengerCar.getEngine().getPower() > 200) {
+        if (car.getCount() >= 1 && car.getEngine().getPower() > 200) {
             System.out.println("The car is ready for sale");
-        } else if (passengerCar.getCount() < 1 && passengerCar.getEngine().getPower() > 200) {
+        } else if (car.getCount() < 1 && car.getEngine().getPower() > 200) {
             System.out.println("Power is more than 200, but car is not available, because count is less than 1");
-        } else if (passengerCar.getCount() >= 1 && passengerCar.getEngine().getPower() < 200) {
+        } else if (car.getCount() >= 1 && car.getEngine().getPower() < 200) {
             System.out.println("The car is available, but engine power is less than 200");
         } else {
             System.out.println("Engine power is less than 200 and count is less than 1");
@@ -93,7 +84,7 @@ public class CarService {
             return -1;
         } else {
             for (int i = 1; i <= counter; i++) {
-                printPass(createPassengerCar());
+                printCar(createCar(Type.randomType()));
             }
             return counter;
         }
