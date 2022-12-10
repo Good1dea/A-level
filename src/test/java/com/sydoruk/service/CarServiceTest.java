@@ -2,6 +2,7 @@ package com.sydoruk.service;
 
 import com.sydoruk.model.Car;
 import com.sydoruk.model.PassengerCar;
+import com.sydoruk.model.Type;
 import com.sydoruk.repository.CarArrayRepository;
 import com.sydoruk.util.RandomGenerator;
 import org.junit.jupiter.api.Assertions;
@@ -14,6 +15,7 @@ class CarServiceTest {
     private CarService target;
     private CarArrayRepository repository;
     private RandomGenerator rnd;
+    private final Type type = Type.CAR;
 
     @BeforeEach
     void setUp() {
@@ -35,23 +37,18 @@ class CarServiceTest {
     }
 
     @Test
-    void createPassengerCarNotNull() {
-        Assertions.assertNotNull(target.createPassengerCar());
-    }
-
-    @Test
-    void createTruckNotNull() {
-        Assertions.assertNotNull(target.createTruck());
+    void createCarNotNull() {
+        Assertions.assertNotNull(target.createCar(type));
     }
 
     @Test
     void printInputNull() {
-        Assertions.assertDoesNotThrow(() -> target.printPass(null));
+        Assertions.assertDoesNotThrow(() -> target.printCar(null));
     }
 
     @Test
     void printNotThrow() {
-        Assertions.assertDoesNotThrow(() -> target.printPass(target.createPassengerCar()));
+        Assertions.assertDoesNotThrow(() -> target.printCar(target.createCar(type)));
     }
 
     @Test
@@ -66,7 +63,7 @@ class CarServiceTest {
 
     @Test
     void checkNotThrow() {
-        Assertions.assertDoesNotThrow(() -> CarService.check(target.createPassengerCar()));
+        Assertions.assertDoesNotThrow(() -> CarService.check(target.createCar(type)));
     }
 
     @Test

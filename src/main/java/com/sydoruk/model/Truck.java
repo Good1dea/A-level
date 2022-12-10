@@ -1,6 +1,6 @@
 package com.sydoruk.model;
 
-public class Truck extends Car implements CountRestore{
+public class Truck extends Car {
 
     private int loadCapacity;
 
