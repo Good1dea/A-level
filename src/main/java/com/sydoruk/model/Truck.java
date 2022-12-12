@@ -19,6 +19,5 @@ public class Truck extends Car {
     @Override
     public void restore() {
         super.setCount(50);
-        System.out.println("Count: " + count);
     }
 }

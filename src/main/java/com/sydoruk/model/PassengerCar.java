@@ -19,6 +19,5 @@ public class PassengerCar extends Car {
      @Override
      public void restore() {
           super.setCount(100);
-          System.out.println("Count: " + count);
      }
 }

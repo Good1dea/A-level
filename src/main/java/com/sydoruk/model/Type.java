@@ -4,7 +4,8 @@ import java.util.Random;
 
 public enum Type {
     CAR,
-    TRUCK;
+    TRUCK,
+    NULL;
 
     private static final Random random = new Random();
 

@@ -1,10 +1,12 @@
 package com.sydoruk.service;
 
+import com.sydoruk.exception.UserInputException;
 import com.sydoruk.model.*;
 import com.sydoruk.repository.CarArrayRepository;
 import com.sydoruk.util.RandomGenerator;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Random;
 
 public class CarService {
@@ -18,41 +20,75 @@ public class CarService {
         this.carArrayRepository = carArrayRepository;
     }
 
+    public void printManufacturerAndCount(final Car car){
+        Optional.ofNullable(car).ifPresent(manufacturerAndCount ->
+            System.out.println("Manufacturer: " + car.getManufacturer() + "; Count: " + car.getCount()));
+    }
+
+    public void printColor (final Car car){
+        System.out.println("Color: " + Optional.ofNullable(car).orElse(createCar(Type.CAR)).getColor());
+    }
+
+    public void checkCount(final Car car)throws UserInputException {
+        Car carOptional = Optional.ofNullable(car)
+                .filter(c -> c.getCount() > 10)
+                .orElseThrow(UserInputException::new);
+        printManufacturerAndCount(carOptional);
+    }
+
+    public void printEngineInfo (final Car car){
+        Car carOptional = Optional.ofNullable(car).orElseGet(() -> {
+                    System.out.println("Create new car");
+                    return createCar(Type.CAR);
+                });
+        Optional.ofNullable(carOptional).map(Car::getEngine).ifPresent(power ->
+                System.out.println("Engine power: " + carOptional.getEngine().getPower()));
+    }
+
+    public void printInfo(final Car car){
+        Optional.ofNullable(car).ifPresentOrElse(print -> printCar(car), () -> printCar(createCar(Type.CAR)));
+    }
+
     public Car createCar(final Type type) {
         Car car = null;
-        if (type == Type.CAR) {
-            car = new PassengerCar();
-            ((PassengerCar)car).setPassengerCount(random.nextInt(9));
-        } else if (type == Type.TRUCK) {
-            car = new Truck();
-            ((Truck)car).setLoadCapacity(random.nextInt(500, 10000));
+        if (type == Type.NULL) {
+            return null;
         }
-        Engine engine = new Engine();
-        car.setType(type);
-        car.setEngine(engine);
-        car.setManufacturer(manufacturers[random.nextInt(0, manufacturers.length)]);
-        car.setColor(Color.randomColor());
-        car.setPrice(random.nextInt(1000, 100001));
-        car.restore();
-        carArrayRepository.save(car);
-        return car;
+        if (type == Type.CAR) {
+                car = new PassengerCar();
+                ((PassengerCar) car).setPassengerCount(random.nextInt(9));
+        } else if (type == Type.TRUCK) {
+                car = new Truck();
+                ((Truck) car).setLoadCapacity(random.nextInt(500, 10000));
+        }
+            Engine engine = new Engine();
+            car.setType(type);
+            car.setEngine(engine);
+            car.setManufacturer(manufacturers[random.nextInt(0, manufacturers.length)]);
+            car.setColor(Color.randomColor());
+            car.setPrice(random.nextInt(1000, 100001));
+            car.restore();
+            carArrayRepository.save(car);
+            return car;
     }
 
     public void printCar(Car car) {
         if (car == null) {
-            return;
-        }
-        System.out.println("Manufacturer: " + car.getManufacturer());
-        System.out.println("Type: " + car.getType());
-        System.out.println("Engine: " + car.getEngine().toString());
-        System.out.println("Color: " + car.getColor());
-        if(car.getType() == Type.CAR){
-            System.out.println("Passengers: " + ((PassengerCar)car).getPassengerCount());
+            System.out.println("null");
         } else {
-            System.out.println("Load capacity: " + ((Truck)car).getLoadCapacity());
+            System.out.println("Manufacturer: " + car.getManufacturer());
+            System.out.println("Type: " + car.getType());
+            System.out.println("Engine: " + car.getEngine().toString());
+            System.out.println("Color: " + car.getColor());
+            System.out.println("Count: " + car.getCount());
+            if (car.getType() == Type.CAR) {
+                System.out.println("Passengers: " + ((PassengerCar) car).getPassengerCount());
+            } else {
+                System.out.println("Load capacity: " + ((Truck) car).getLoadCapacity());
+            }
+            System.out.println("Price: " + car.getPrice() + " $");
+            System.out.println();
         }
-        System.out.println("Price: " + car.getPrice() + " $");
-        System.out.println();
     }
 
     public boolean carEquals(Car carFirst, Car carSecond) {
