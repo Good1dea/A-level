@@ -1,6 +1,5 @@
 package com.sydoruk.repository;
 
-import com.sydoruk.model.Color;
 import com.sydoruk.model.Car;
 
 public class CarArrayRepository {

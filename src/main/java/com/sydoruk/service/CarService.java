@@ -51,9 +51,6 @@ public class CarService {
 
     public Car createCar(final Type type) {
         Car car = null;
-        if (type == Type.NULL) {
-            return null;
-        }
         if (type == Type.CAR) {
                 car = new PassengerCar();
                 ((PassengerCar) car).setPassengerCount(random.nextInt(9));
@@ -76,6 +73,7 @@ public class CarService {
         if (car == null) {
             System.out.println("null");
         } else {
+            System.out.println("ID: " + car.getId());
             System.out.println("Manufacturer: " + car.getManufacturer());
             System.out.println("Type: " + car.getType());
             System.out.println("Engine: " + car.getEngine().toString());
