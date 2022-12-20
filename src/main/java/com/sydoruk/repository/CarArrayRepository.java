@@ -2,7 +2,7 @@ package com.sydoruk.repository;
 
 import com.sydoruk.model.Car;
 
-public class CarArrayRepository {
+public class CarArrayRepository implements Repository <Car> {
     private static Car[] cars = new Car[10];
 
     public void save(final Car car) {
