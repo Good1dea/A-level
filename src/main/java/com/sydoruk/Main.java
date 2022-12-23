@@ -1,43 +1,48 @@
 package com.sydoruk;
 
-import com.sydoruk.container.CarList;
+import com.sydoruk.container.CarComparator;
+import com.sydoruk.container.CarTree;
 import com.sydoruk.model.Car;
 import com.sydoruk.model.Type;
 import com.sydoruk.repository.CarArrayRepository;
 import com.sydoruk.service.CarService;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+
 public class Main {
     public static void main(final String[] args) {
         CarService carService = new CarService(new CarArrayRepository());
-        Car car = carService.createCar(Type.randomType());
-        System.out.println("============== addNodeInHead ====================");
-        CarList <? extends Car> carList = new CarList<>();
-        carList.addNodeInHead(car);
-        carList.printNodes();
+        Car carA = carService.createCar(Type.randomType());
+        carService.printCar(carA);
+        Car carB = carService.createCar(Type.randomType());
+        carService.printCar(carB);
+        System.out.println("============== compare ====================");
+        CarComparator <Car> carComparator = new CarComparator<>();
+        System.out.println(carComparator.compare(carA, carB));
+
+        System.out.println("============== tree ====================");
         System.out.println();
-        System.out.println("============== addNodeInTail x10 ================");
-        for (int i = 0; i < 10;i++) {
-            Car newCar = carService.createCar(Type.randomType());
-            carList.addNodeInTail(newCar);
+        CarTree<Car> carTree = new CarTree<>();
+        for(int i = 0; i < 5000; i++) {
+            Car car = carService.createCar(Type.randomType());
+            carTree.insertNode(car);
+            System.out.print(car.getCount() + "  ");
         }
-        carList.printNodes();
+
         System.out.println();
-        System.out.println("============== insertPosition 4 ==================");
-        Car car2 = carService.createCar(Type.randomType());
-        carList.insertPosition(4, car2);
-        carList.printNodes();
+        System.out.println("============== Count ====================");
+        System.out.println("Left count = " + carTree.getLeftCarCount());
+        System.out.println("Right count = " + carTree.getRightCarCount());
+
+        System.out.println("============== Manufacturer MAP ====================");
         System.out.println();
-        System.out.println("============== getPosition 3 ====================");
-        Car[] carArray = carService.getAll();
-        int position = carList.getPosition(carArray[3]);
-        System.out.println(position);
+        HashMap<String, Integer> mapManufacturer = carService.getMapManufacturer(carService.getAll());
+        System.out.println(mapManufacturer.toString());
+
+        System.out.println("============== Engine MAP ====================");
         System.out.println();
-        System.out.println("============== deleteByPosition ================");
-        carList.deleteByPosition(position);
-        carList.printNodes();
-        carService.delete(carArray[3].getId());
-        System.out.println();
-        System.out.println("============== getTotalCarCount ==================");
-        System.out.println(carList.getTotalCarCount());
+        HashMap<Integer, LinkedList> mapEngine = carService.getMapEngineType(carService.getAll());
+        System.out.println(mapEngine.toString());
     }
 }

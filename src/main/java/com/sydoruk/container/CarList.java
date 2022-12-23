@@ -42,7 +42,7 @@ public class CarList <T extends Car> {
         Node current = head;
         while(current.next != null){
             index++;
-            if(car.getId().equals(current.getCar().getId())){
+            if(car.getId().equals(current.getValue().getId())){
                 found = true;
                 break;
             }
@@ -106,7 +106,7 @@ public class CarList <T extends Car> {
      Node current = head;
      int count = 0;
      while (current.next != null) {
-         count += current.getCar().getCount();
+         count += current.getValue().getCount();
          current = current.next;
      }
 
@@ -121,7 +121,7 @@ public class CarList <T extends Car> {
         }
         System.out.println("Nodes of CarList: ");
         while (current != null) {
-            System.out.println(current.car.getId() + " ");
+            System.out.println(current.getValue().getId() + " ");
             current = current.next;
         }
     }

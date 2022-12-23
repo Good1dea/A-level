@@ -5,9 +5,8 @@ import com.sydoruk.model.*;
 import com.sydoruk.repository.CarArrayRepository;
 import com.sydoruk.util.RandomGenerator;
 
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CarService {
 
@@ -64,7 +63,8 @@ public class CarService {
             car.setManufacturer(manufacturers[random.nextInt(0, manufacturers.length)]);
             car.setColor(Color.randomColor());
             car.setPrice(random.nextInt(1000, 100001));
-            car.restore();
+            //car.restore();
+            car.setCount(random.nextInt(1, 50));
             carArrayRepository.save(car);
             return car;
     }
@@ -144,5 +144,40 @@ public class CarService {
         if (id != null && !id.isEmpty()) {
             carArrayRepository.delete(id);
         }
+    }
+
+    public HashMap<String, Integer> getMapManufacturer(final Car[] cars){
+        HashMap<String, Integer> map = null;
+        if(cars != null) {
+            map = new HashMap<>();
+            for (Car car : cars) {
+                if(map.containsKey(car.getManufacturer())){
+                    map.put(car.getManufacturer(), map.get(car.getManufacturer()) + car.getCount());
+                } else {
+                    map.put(car.getManufacturer(), car.getCount());
+                }
+            }
+        }
+        return map;
+    }
+
+    public HashMap<Integer, LinkedList> getMapEngineType(final Car[] cars){
+        HashMap<Integer, LinkedList> map = null;
+        LinkedList<Car> listCar;
+        if(cars != null) {
+            map = new HashMap<>();
+            for (Car car : cars) {
+                int power = car.getEngine().getPower();
+                if(map.containsKey(power)){
+                    listCar = map.get(power);
+                    listCar.add(car);
+                } else {
+                    map.put(power, new LinkedList<>());
+                    listCar = map.get(power);
+                    listCar.add(car);
+                }
+            }
+        }
+        return map;
     }
 }
