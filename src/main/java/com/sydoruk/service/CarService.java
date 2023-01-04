@@ -6,7 +6,9 @@ import com.sydoruk.repository.CarArrayRepository;
 import com.sydoruk.util.RandomGenerator;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class CarService {
 
@@ -179,5 +181,66 @@ public class CarService {
             }
         }
         return map;
+    }
+
+    public void findManufacturerByPrice (final List<? extends Car> cars, int price){
+        cars.stream()
+                .filter(p -> p.getPrice() > price)
+                .map(Car::getManufacturer)
+                .collect(Collectors.toList())
+                .forEach(System.out::println);
+    }
+
+    public int countSum (final List<? extends Car> cars) {
+        int sum = cars.stream()
+                .map(Car::getCount)
+                .reduce(0, Integer::sum);
+        return sum;
+    }
+
+    public Map<String, Type> mapToMap(final List<? extends Car> cars){
+        LinkedHashMap <String, Type> mapCars = cars.stream()
+                .distinct()
+                .sorted(Comparator.comparing(Car::getManufacturer))
+                .collect(Collectors.toMap(Car::getId, Car::getType, (key1, key2) -> key1, LinkedHashMap::new));
+        return mapCars;
+    }
+
+    public Map<Integer, Long> statistic(final List<? extends Car> cars){
+        Map<Integer, Long> statistic = cars.stream()
+                .collect(Collectors.groupingBy(Car::getPrice, Collectors.counting()));
+        return statistic;
+    }
+
+    public boolean priceCheck(final List<? extends Car> cars, int price){
+        Predicate <Car> predicatePrice = p -> p.getPrice() > price;
+        return cars.stream()
+                .allMatch(predicatePrice);
+    }
+
+    public Car mapToObject (final Map<String, Object> config){
+        Function<Map, Car> function = map -> createCar((Type) config.get("Type"));
+        Car car = function
+                .andThen(newCar -> {
+                    newCar.setColor((Color) config.get("Color"));
+                    return newCar;
+                }).andThen(newCar -> {
+                        newCar.setPrice((int)config.get("Price"));
+                        return newCar;
+                }).andThen(newCar -> {
+                    newCar.setManufacturer((String) config.get("Manufacturer"));
+                    return newCar;
+                }).apply(config);
+        return car;
+    }
+
+    public Map<Color,Long> innerList(final List<List<Car>> cars, int price){
+        Map<Color, Long> sortedCars = cars.stream()
+                .flatMap(list -> list.stream())
+                .sorted(Comparator.comparing(Car::getColor))
+                .peek(System.out::println)
+                .filter(p -> p.getPrice() > price)
+                .collect(Collectors.groupingBy(Car::getColor, Collectors.counting()));
+        return sortedCars;
     }
 }
