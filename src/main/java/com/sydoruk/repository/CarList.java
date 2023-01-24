@@ -1,11 +1,22 @@
-package com.sydoruk.container;
+package com.sydoruk.repository;
 
+import com.sydoruk.annotation.Singleton;
 import com.sydoruk.model.Car;
 
-public class CarList <T extends Car> {
+@Singleton
+public class CarList <T extends Car> implements InterfaceRepository<T> {
     private Node head = null;
     private Node tail = null;
     private int length = 0;
+    private static CarList instance;
+
+    public static CarList getInstance() {
+        if (instance == null) {
+            instance = new CarList();
+        }
+        return instance;
+    }
+
 
     public <T extends Car> void addNodeInHead(T car) {
         Node newNode = new Node(car);
@@ -26,7 +37,7 @@ public class CarList <T extends Car> {
         if(tail == null) {
             addNodeInHead(car);
         } else {
-            Node newNode = new Node(car);
+           Node newNode = new Node(car);
             tail.next = newNode;
             newNode.previous = tail;
             tail = newNode;
@@ -39,7 +50,7 @@ public class CarList <T extends Car> {
     public <T extends Car> int getPosition(T car) {
         int index = -1;
         boolean found = false;
-        Node current = head;
+       Node current = head;
         while(current.next != null){
             index++;
             if(car.getId().equals(current.getValue().getId())){
@@ -91,7 +102,7 @@ public class CarList <T extends Car> {
                 newTail.next = null;
                 tail = newTail;
             }else{
-                Node current = head;
+               Node current = head;
                 for (int i = 0; i < position; i++) {
                     current = current.next;
                 }
@@ -103,7 +114,7 @@ public class CarList <T extends Car> {
     }
 
     public int getTotalCarCount() {
-     Node current = head;
+    Node current = head;
      int count = 0;
      while (current.next != null) {
          count += current.getValue().getCount();
@@ -124,5 +135,26 @@ public class CarList <T extends Car> {
             System.out.println(current.getValue().getId() + " ");
             current = current.next;
         }
+    }
+
+    @Override
+    public void save(T car) {
+
+    }
+
+    @Override
+    public T[] getAll() {
+        return null;
+
+    }
+
+    @Override
+    public T getById(String id) {
+
+        return null;
+    }
+
+    @Override
+    public void delete(String id) {
     }
 }

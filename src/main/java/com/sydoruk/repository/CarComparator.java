@@ -1,4 +1,4 @@
-package com.sydoruk.container;
+package com.sydoruk.repository;
 
 import com.sydoruk.model.Car;
 

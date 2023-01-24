@@ -1,10 +1,21 @@
 package com.sydoruk.repository;
 
+import com.sydoruk.annotation.Singleton;
 import com.sydoruk.model.Car;
 
-public class CarArrayRepository implements Repository <Car> {
+@Singleton
+public class CarArrayRepository implements InterfaceRepository<Car> {
     private static Car[] cars = new Car[10];
+    private static CarArrayRepository instance;
 
+    public static CarArrayRepository getInstance() {
+        if (instance == null) {
+            instance = new CarArrayRepository();
+        }
+        return instance;
+    }
+
+    @Override
     public void save(final Car car) {
         final int index = putCar(car);
         if (index == cars.length) {
@@ -14,6 +25,7 @@ public class CarArrayRepository implements Repository <Car> {
         }
     }
 
+    @Override
     public Car[] getAll() {
         final int newLength = foundLength();
         final Car[] newCars = new Car[newLength];
@@ -21,6 +33,7 @@ public class CarArrayRepository implements Repository <Car> {
         return newCars;
     }
 
+    @Override
     public Car getById(final String id) {
         for (Car car : cars) {
             if (car.getId().equals(id)) {
@@ -30,6 +43,7 @@ public class CarArrayRepository implements Repository <Car> {
         return null;
     }
 
+    @Override
     public void delete(final String id) {
         int index = 0;
         for (; index < cars.length; index++) {
