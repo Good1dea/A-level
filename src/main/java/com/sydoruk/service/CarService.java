@@ -1,5 +1,7 @@
 package com.sydoruk.service;
 
+import com.sydoruk.annotation.Autowired;
+import com.sydoruk.annotation.Singleton;
 import com.sydoruk.exception.UserInputException;
 import com.sydoruk.model.*;
 import com.sydoruk.repository.CarArrayRepository;
@@ -10,6 +12,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+@Singleton
 public class CarService {
 
     private final CarArrayRepository carArrayRepository;
@@ -17,6 +20,7 @@ public class CarService {
     private final String[] manufacturers = {"Suzuki", "Audi", "ZAZ", "Ford", "Toyota", "Fiat", "Volvo", "Tesla",
             "Volkswagen", "Subaru", "Dodge", "Ferrari", "Cadillac", "BMW", "Bugatti", "Jaguar"};
 
+    @Autowired(classImplementation = CarArrayRepository.class)
     public CarService(final CarArrayRepository carArrayRepository) {
         this.carArrayRepository = carArrayRepository;
     }

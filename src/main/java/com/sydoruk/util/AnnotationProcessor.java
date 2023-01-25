@@ -6,6 +6,7 @@ import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -21,9 +22,10 @@ public class AnnotationProcessor {
         } else {
             for (Class<?> classWithSingleton : classesWithSingleton) {
                 try {
-                    Object init = Class.forName(classWithSingleton.getName()).newInstance();
+                    Method methodGetInstance = classWithSingleton.getMethod("getInstance");
+                    Object init = methodGetInstance.invoke(classWithSingleton);
                     cash.put(classWithSingleton, init);
-                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
             }
