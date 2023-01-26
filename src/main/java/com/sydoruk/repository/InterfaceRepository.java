@@ -1,12 +1,12 @@
 package com.sydoruk.repository;
 
-public interface InterfaceRepository<T>{
+public interface InterfaceRepository<Car>{
 
-    void save(final T car);
+    void save(final Car car);
 
-    T[] getAll();
+    Car[] getAll();
 
-    T getById(final String id);
+    Car getById(final String id);
 
     void delete(final String id);
 }
