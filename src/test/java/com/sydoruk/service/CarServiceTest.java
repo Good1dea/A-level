@@ -4,6 +4,8 @@ import com.sydoruk.model.Car;
 import com.sydoruk.model.PassengerCar;
 import com.sydoruk.model.Type;
 import com.sydoruk.repository.CarArrayRepository;
+import com.sydoruk.repository.CarList;
+import com.sydoruk.repository.InterfaceRepository;
 import com.sydoruk.util.RandomGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +15,7 @@ import org.mockito.Mockito;
 class CarServiceTest {
 
     private CarService target;
-    private CarArrayRepository repository;
+    private InterfaceRepository<Car> repository;
     private RandomGenerator rnd;
     private final Type type = Type.CAR;
 

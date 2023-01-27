@@ -1,8 +1,11 @@
 package com.sydoruk.service;
 
+import com.sydoruk.annotation.Autowired;
+import com.sydoruk.annotation.Singleton;
 import com.sydoruk.exception.UserInputException;
 import com.sydoruk.model.*;
 import com.sydoruk.repository.CarArrayRepository;
+import com.sydoruk.repository.InterfaceRepository;
 import com.sydoruk.util.RandomGenerator;
 
 import java.util.*;
@@ -10,15 +13,17 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+@Singleton
 public class CarService {
 
-    private final CarArrayRepository carArrayRepository;
+    private final InterfaceRepository <Car> carRepository;
     private final Random random = new Random();
     private final String[] manufacturers = {"Suzuki", "Audi", "ZAZ", "Ford", "Toyota", "Fiat", "Volvo", "Tesla",
             "Volkswagen", "Subaru", "Dodge", "Ferrari", "Cadillac", "BMW", "Bugatti", "Jaguar"};
 
-    public CarService(final CarArrayRepository carArrayRepository) {
-        this.carArrayRepository = carArrayRepository;
+    @Autowired(classImplementation = CarArrayRepository.class)
+    public CarService(InterfaceRepository<Car> carRepository) {
+        this.carRepository = carRepository;
     }
 
     public void printManufacturerAndCount(final Car car){
@@ -67,7 +72,7 @@ public class CarService {
             car.setPrice(random.nextInt(1000, 100001));
             //car.restore();
             car.setCount(random.nextInt(1, 50));
-            carArrayRepository.save(car);
+            carRepository.save(car);
             return car;
     }
 
@@ -127,24 +132,24 @@ public class CarService {
     }
 
     public void printAll() {
-        final Car[] all = carArrayRepository.getAll();
+        final Car[] all = carRepository.getAll();
         System.out.println(Arrays.toString(all));
     }
 
     public Car[] getAll() {
-        return carArrayRepository.getAll();
+        return carRepository.getAll();
     }
 
     public Car find(final String id) {
         if (id == null || id.isEmpty()) {
             return null;
         }
-        return carArrayRepository.getById(id);
+        return carRepository.getById(id);
     }
 
     public void delete(final String id) {
         if (id != null && !id.isEmpty()) {
-            carArrayRepository.delete(id);
+            carRepository.delete(id);
         }
     }
 

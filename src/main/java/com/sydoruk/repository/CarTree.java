@@ -1,18 +1,29 @@
-package com.sydoruk.container;
+package com.sydoruk.repository;
 
+import com.sydoruk.annotation.Autowired;
+import com.sydoruk.annotation.Singleton;
 import com.sydoruk.model.Car;
 
 import java.util.*;
 
-public class CarTree<T extends Car> {
+@Singleton
+public class CarTree<T extends Car> implements InterfaceRepository<T> {
 
     private T car;
     private Node root;
-    private CarComparator<T> carComparator;
+    private final CarComparator<T> carComparator;
+    private static CarTree instance;
 
     public CarTree() {
         carComparator = new CarComparator<>();
         root = null;
+    }
+
+    public static CarTree getInstance() {
+        if (instance == null) {
+            instance = new CarTree();
+        }
+        return instance;
     }
 
     public CarTree(T car) {
@@ -22,7 +33,7 @@ public class CarTree<T extends Car> {
 
     public void insertNode(T car) {
         int position = -2;
-        Node newNode = new Node<>(car);
+       Node newNode = new Node<>(car);
         if (root == null) {
             root = newNode;
         } else {
@@ -100,5 +111,25 @@ public class CarTree<T extends Car> {
             }
         }
         return totalCount;
+    }
+
+    @Override
+    public void save(T car) {
+
+    }
+
+    @Override
+    public T[] getAll() {
+        return null;
+    }
+
+    @Override
+    public T getById(String id) {
+        return null;
+    }
+
+    @Override
+    public void delete(String id) {
+
     }
 }
