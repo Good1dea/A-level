@@ -1,6 +1,5 @@
 package com.sydoruk.service;
 
-import com.sydoruk.annotation.Autowired;
 import com.sydoruk.annotation.Singleton;
 import com.sydoruk.exception.UserInputException;
 import com.sydoruk.model.*;
@@ -15,14 +14,21 @@ import java.util.stream.Collectors;
 @Singleton
 public class CarService {
 
-    private final CarArrayRepository carArrayRepository;
+    private final CarArrayRepository carArrayRepository = new CarArrayRepository();
     private final Random random = new Random();
     private final String[] manufacturers = {"Suzuki", "Audi", "ZAZ", "Ford", "Toyota", "Fiat", "Volvo", "Tesla",
             "Volkswagen", "Subaru", "Dodge", "Ferrari", "Cadillac", "BMW", "Bugatti", "Jaguar"};
 
-    @Autowired(classImplementation = CarArrayRepository.class)
+  /*  @Autowired(classImplementation = CarArrayRepository.class)
     public CarService(final CarArrayRepository carArrayRepository) {
         this.carArrayRepository = carArrayRepository;
+    } */
+
+    public CarService(){
+
+    }
+
+    public CarService(CarArrayRepository repository) {
     }
 
     public void printManufacturerAndCount(final Car car){
@@ -58,24 +64,22 @@ public class CarService {
         Car car = null;
         if (type == Type.CAR) {
                 car = new PassengerCar();
-                ((PassengerCar) car).setPassengerCount(random.nextInt(9));
         } else if (type == Type.TRUCK) {
                 car = new Truck();
-                ((Truck) car).setLoadCapacity(random.nextInt(500, 10000));
         }
-            Engine engine = new Engine();
-            car.setType(type);
-            car.setEngine(engine);
-            car.setManufacturer(manufacturers[random.nextInt(0, manufacturers.length)]);
-            car.setColor(Color.randomColor());
-            car.setPrice(random.nextInt(1000, 100001));
+        Engine engine = new Engine();
+        car.setEngine(engine);
+        car.setManufacturer(manufacturers[random.nextInt(0, manufacturers.length)]);
+        car.setColor(Color.randomColor());
+        car.setPrice(random.nextInt(1000, 100001));
             //car.restore();
-            car.setCount(random.nextInt(1, 50));
-            carArrayRepository.save(car);
-            return car;
+        car.setCount(random.nextInt(1, 6));
+        //System.out.println(car.toString());
+           // carArrayRepository.save(car);
+        return car;
     }
 
-    public void printCar(Car car) {
+    public static void printCar(Car car) {
         if (car == null) {
             System.out.println("null");
         } else {
@@ -131,12 +135,12 @@ public class CarService {
     }
 
     public void printAll() {
-        final Car[] all = carArrayRepository.getAll();
+        final Car[] all = carArrayRepository.getAllCars();
         System.out.println(Arrays.toString(all));
     }
 
     public Car[] getAll() {
-        return carArrayRepository.getAll();
+        return carArrayRepository.getAllCars();
     }
 
     public Car find(final String id) {

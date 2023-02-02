@@ -3,6 +3,8 @@ package com.sydoruk.repository;
 import com.sydoruk.annotation.Singleton;
 import com.sydoruk.model.Car;
 
+import java.util.List;
+
 @Singleton
 public class CarArrayRepository implements InterfaceRepository<Car> {
     private static Car[] cars = new Car[10];
@@ -26,7 +28,12 @@ public class CarArrayRepository implements InterfaceRepository<Car> {
     }
 
     @Override
-    public Car[] getAll() {
+    public List<Car> getAll() {
+        return null;
+    }
+
+
+    public Car[] getAllCars() {
         final int newLength = foundLength();
         final Car[] newCars = new Car[newLength];
         System.arraycopy(cars, 0, newCars, 0, newLength);
