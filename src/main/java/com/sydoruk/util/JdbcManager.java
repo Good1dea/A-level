@@ -1,4 +1,4 @@
-package com.sydoruk.repository;
+package com.sydoruk.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

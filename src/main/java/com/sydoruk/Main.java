@@ -2,8 +2,9 @@ package com.sydoruk;
 
 import com.sydoruk.model.Car;
 import com.sydoruk.model.Type;
-import com.sydoruk.repository.JdbcRepository;
-import com.sydoruk.repository.JdbcManager;
+import com.sydoruk.repository.CarJdbcRepository;
+import com.sydoruk.repository.OrderJdbcRepository;
+import com.sydoruk.util.JdbcManager;
 import com.sydoruk.model.Order;
 import com.sydoruk.service.CarService;
 
@@ -18,7 +19,8 @@ public class Main {
         Random random = new Random();
         final Connection connection = JdbcManager.getConnection();
         connection.setAutoCommit(false);
-        final JdbcRepository repository = JdbcRepository.getInstance(connection);
+        final OrderJdbcRepository orderJdbcRepository = OrderJdbcRepository.getInstance(connection);
+        final CarJdbcRepository carJdbcRepository = CarJdbcRepository.getInstance(connection);
         final CarService carService = new CarService();
         final List<Order> orders = new ArrayList<>(5);
         final List<String> carId = new ArrayList<>();
@@ -36,18 +38,17 @@ public class Main {
             orderId.add(order.getId());
             order.setCars(cars);
             Order.printOrder(order);
-            orders.add(i, order);
+            orderJdbcRepository.save(order);
         }
 
-        repository.saveOrders(orders);
-        System.out.println("All orders in BD: " + repository.getAllOrders());
-        System.out.println("All cars in BD: " + repository.getAll());
-        System.out.println("Get car by id: " + repository.getById(carId.get(random.nextInt(0,carId.size()))));
-        System.out.println("Get order by id: " + repository.getOrderById(orderId.get(random.nextInt(0, orderId.size()))));
-        repository.delete(carId.get(random.nextInt(carId.size())));
-        repository.deleteOrder(orderId.get(random.nextInt(orderId.size())));
-        System.out.println("All orders in BD: " + repository.getAllOrders());
-        System.out.println("All cars in BD: " + repository.getAll());
+        System.out.println("All orders in BD: " + orderJdbcRepository.getAll());
+        System.out.println("All cars in BD: " + carJdbcRepository.getAll());
+        System.out.println("Get car by id: " + carJdbcRepository.getById(carId.get(random.nextInt(0,carId.size()))));
+        System.out.println("Get order by id: " + orderJdbcRepository.getById(orderId.get(random.nextInt(0, orderId.size()))));
+        carJdbcRepository.delete(carId.get(random.nextInt(carId.size())));
+        orderJdbcRepository.delete(orderId.get(random.nextInt(orderId.size())));
+        System.out.println("All orders in BD: " + orderJdbcRepository.getAll());
+        System.out.println("All cars in BD: " + orderJdbcRepository.getAll());
         connection.commit();
         connection.close();
 
