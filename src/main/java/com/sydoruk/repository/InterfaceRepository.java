@@ -4,11 +4,11 @@ import java.util.List;
 
 public interface InterfaceRepository<T>{
 
-    void save(final T car);
+    void save(final Car car);
 
     List<T> getAll();
 
-    T getById(final String id);
+    Car getById(final String id);
 
     void delete(final String id);
 }
