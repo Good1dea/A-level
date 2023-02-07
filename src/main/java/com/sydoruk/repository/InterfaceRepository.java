@@ -1,10 +1,12 @@
 package com.sydoruk.repository;
 
-public interface InterfaceRepository<Car>{
+import java.util.List;
+
+public interface InterfaceRepository<T>{
 
     void save(final Car car);
 
-    Car[] getAll();
+    List<T> getAll();
 
     Car getById(final String id);
 

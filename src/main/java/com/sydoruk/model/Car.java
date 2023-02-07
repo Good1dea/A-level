@@ -1,9 +1,14 @@
 package com.sydoruk.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Objects;
 import java.util.UUID;
 import java.util.Random;
 
+@Setter
+@Getter
 public abstract class Car implements CountRestore {
 
     protected String manufacturer;

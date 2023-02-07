@@ -3,6 +3,8 @@ package com.sydoruk.repository;
 import com.sydoruk.annotation.Singleton;
 import com.sydoruk.model.Car;
 
+import java.util.List;
+
 @Singleton
 public class CarList <T extends Car> implements InterfaceRepository<T> {
     private Node head = null;
@@ -143,7 +145,7 @@ public class CarList <T extends Car> implements InterfaceRepository<T> {
     }
 
     @Override
-    public T[] getAll() {
+    public List<T> getAll() {
         return null;
 
     }

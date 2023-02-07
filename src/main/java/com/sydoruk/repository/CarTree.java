@@ -119,7 +119,7 @@ public class CarTree<T extends Car> implements InterfaceRepository<T> {
     }
 
     @Override
-    public T[] getAll() {
+    public List<T> getAll() {
         return null;
     }
 
