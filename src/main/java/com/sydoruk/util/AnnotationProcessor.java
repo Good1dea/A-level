@@ -7,15 +7,18 @@ import org.reflections.Reflections;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+
 
 public class AnnotationProcessor {
 
-    private final HashMap<Class<?>, Object> cash = new HashMap<>();
+    private static final Map<Class<?>, Object> cash = new HashMap<>();
 
-    public void findAndInitClassWithSingleton() {
-        Reflections reflections = new Reflections("com.sydoruk.repository");
+    public void initClassesWithSingleton() {
+        final Reflections reflections = new Reflections("com.sydoruk.repository");
         final Set<Class<?>> classesWithSingleton = reflections.getTypesAnnotatedWith(Singleton.class);
         if (classesWithSingleton.isEmpty()) {
             System.out.println("There are no classes with @Singleton");
@@ -24,7 +27,9 @@ public class AnnotationProcessor {
                 try {
                     Method methodGetInstance = classWithSingleton.getMethod("getInstance");
                     Object init = methodGetInstance.invoke(classWithSingleton);
-                    cash.put(classWithSingleton, init);
+                    if (!cash.containsKey(classWithSingleton)) {
+                        cash.put(classWithSingleton, init);
+                    }
                 } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
@@ -32,25 +37,30 @@ public class AnnotationProcessor {
         }
     }
 
-    public void findAndInitClassWithAutowired() {
-        Reflections reflections = new Reflections("com.sydoruk.service");
-        final Set<Constructor> constructorsWithAutowired = reflections.getConstructorsAnnotatedWith(Autowired.class);
-        if (constructorsWithAutowired.isEmpty()) {
-            System.out.println("There are no constructors with @Autowired");
+    public void initClassesWithAutowired() {
+        final Reflections reflections = new Reflections("com.sydoruk.service");
+        final Set<Class<?>> classesWithSingleton = reflections.getTypesAnnotatedWith(Singleton.class);
+        if (classesWithSingleton.isEmpty()) {
+            System.out.println("There are no classes with @Singleton");
         } else {
-            constructorsWithAutowired.stream()
-                    .peek(constructor -> constructor.setAccessible(true))
-                    .forEach(constructor -> {
-                        Class<?> argument = constructor.getDeclaredAnnotation(Autowired.class).classImplementation();
-                        try {
-                            Object init = constructor.newInstance(argument);
-                            if (!cash.containsValue(init)) {
-                                cash.put(init.getClass(), init);
+            for (Class<?> classWithSingleton : classesWithSingleton) {
+                final Constructor<?>[] constructors = classWithSingleton.getDeclaredConstructors();
+                Arrays.stream(constructors)
+                        .filter(constructor -> (constructor.getDeclaredAnnotation(Autowired.class)) != null)
+                        .forEach(constructor -> {
+                            constructor.setAccessible(true);
+                            final Class repository = constructor.getDeclaredAnnotation(Autowired.class).classImplementation();
+                            try {
+                                Object init = constructor.newInstance(cash.get(repository));
+                                if (!cash.containsKey(classWithSingleton)) {
+                                    cash.put(classWithSingleton, init);
+                                }
+                            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                                e.printStackTrace();
                             }
-                        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
+                        });
+            }
+
         }
     }
 
