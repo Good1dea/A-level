@@ -6,10 +6,10 @@ import com.sydoruk.service.OrderHibernateService;
 import java.util.List;
 import java.util.Optional;
 
-public class OrderHibernateController {
+public class OrderController {
     private final OrderHibernateService orderHibernateService;
 
-    public OrderHibernateController(final OrderHibernateService orderHibernateService) {
+    public OrderController(final OrderHibernateService orderHibernateService) {
         this.orderHibernateService = orderHibernateService;
     }
 

@@ -6,11 +6,11 @@ import com.sydoruk.service.CarHibernateService;
 import java.util.List;
 import java.util.Optional;
 
-public class CarHibernateController {
+public class CarController {
 
     private final CarHibernateService carHibernateService;
 
-    public CarHibernateController(final CarHibernateService carHibernateService) {
+    public CarController(final CarHibernateService carHibernateService) {
         this.carHibernateService = carHibernateService;
     }
 
