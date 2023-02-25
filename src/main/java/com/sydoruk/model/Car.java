@@ -34,6 +34,9 @@ public abstract class Car implements CountRestore {
         price = random.nextInt();
     }
 
+
+
+
     public String getId() {
         return id;
     }

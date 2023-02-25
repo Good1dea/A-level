@@ -147,7 +147,7 @@ public class CarService {
         if (id == null || id.isEmpty()) {
             return null;
         }
-        return carArrayRepository.getById(id);
+        return carArrayRepository.carGetById(id);
     }
 
     public void delete(final String id) {

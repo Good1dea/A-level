@@ -12,4 +12,9 @@ public enum Type {
         Type[] types = values();
         return types[random.nextInt(types.length)];
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

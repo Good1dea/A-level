@@ -4,6 +4,7 @@ import com.sydoruk.annotation.Singleton;
 import com.sydoruk.model.Car;
 
 import java.util.List;
+import java.util.Optional;
 
 @Singleton
 public class CarArrayRepository implements InterfaceRepository<Car> {
@@ -18,12 +19,12 @@ public class CarArrayRepository implements InterfaceRepository<Car> {
     }
 
     @Override
-    public void save(final Car car) {
-        final int index = putCar(car);
+    public void save(final Car object) {
+        final int index = putCar(object);
         if (index == cars.length) {
             final int oldLength = cars.length;
             increaseArray();
-            cars[oldLength] = car;
+            cars[oldLength] = object;
         }
     }
 
@@ -40,8 +41,7 @@ public class CarArrayRepository implements InterfaceRepository<Car> {
         return newCars;
     }
 
-    @Override
-    public Car getById(final String id) {
+    public Car carGetById(final String id) {
         for (Car car : cars) {
             if (car.getId().equals(id)) {
                 return car;
@@ -91,5 +91,10 @@ public class CarArrayRepository implements InterfaceRepository<Car> {
         Car[] newCars = new Car[cars.length * 2];
         System.arraycopy(cars, 0, newCars, 0, cars.length);
         cars = newCars;
+    }
+
+    @Override
+    public Optional<Car> getById(final String id) {
+        return null;
     }
 }

@@ -2,6 +2,9 @@ package com.sydoruk.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bson.BsonDocument;
+import org.bson.BsonInt32;
+import org.bson.BsonString;
 
 import java.util.Random;
 import java.util.UUID;
@@ -41,4 +44,13 @@ public class Engine {
     public String toString() {
         return String.format("%s %d", type, power);
     }
+
+    public BsonDocument toBsonDocument() {
+        BsonDocument bson = new BsonDocument()
+                .append("id", new BsonString(id))
+                .append("power", new BsonInt32(power))
+                .append("type", new BsonString(type));
+        return bson;
+    }
+
 }

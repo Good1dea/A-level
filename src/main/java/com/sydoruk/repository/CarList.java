@@ -4,6 +4,7 @@ import com.sydoruk.annotation.Singleton;
 import com.sydoruk.model.Car;
 
 import java.util.List;
+import java.util.Optional;
 
 @Singleton
 public class CarList <T extends Car> implements InterfaceRepository<T> {
@@ -140,7 +141,7 @@ public class CarList <T extends Car> implements InterfaceRepository<T> {
     }
 
     @Override
-    public void save(T car) {
+    public void save(T object) {
 
     }
 
@@ -151,7 +152,7 @@ public class CarList <T extends Car> implements InterfaceRepository<T> {
     }
 
     @Override
-    public T getById(String id) {
+    public Optional<T> getById(String id) {
 
         return null;
     }

@@ -114,7 +114,7 @@ public class CarTree<T extends Car> implements InterfaceRepository<T> {
     }
 
     @Override
-    public void save(T car) {
+    public void save(T object) {
 
     }
 
@@ -124,7 +124,7 @@ public class CarTree<T extends Car> implements InterfaceRepository<T> {
     }
 
     @Override
-    public T getById(String id) {
+    public Optional<T> getById(String id) {
         return null;
     }
 
