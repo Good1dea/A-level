@@ -14,8 +14,8 @@ import java.util.UUID;
 public class Engine {
 
     private final String id;
-    private final int power;
-    private final String type;
+    private int power;
+    private String type;
     private final String[] types = {"GASOLINE","ELECTRIC","DIESEL"};
     private final Random random = new Random();
 
