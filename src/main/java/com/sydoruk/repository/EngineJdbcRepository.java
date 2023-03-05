@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class EngineJdbcRepository implements InterfaceRepository<Engine> {
     private final Connection connection;
@@ -26,14 +27,14 @@ public class EngineJdbcRepository implements InterfaceRepository<Engine> {
 
 
     @Override
-    public void save(final Engine engine) {
+    public void save(final Engine object) {
         try {
             connection.setAutoCommit(false);
             final String insertEngine = "INSERT INTO engines (idEngine, typeEngine, power) VALUES (?, ?, ?)";
             try (PreparedStatement saveEngine = connection.prepareStatement(insertEngine)) {
-                saveEngine.setString(1, engine.getId());
-                saveEngine.setString(2, engine.getType());
-                saveEngine.setInt(3, engine.getPower());
+                saveEngine.setString(1, object.getId());
+                saveEngine.setString(2, object.getType());
+                saveEngine.setInt(3, object.getPower());
                 saveEngine.executeUpdate();
             }
             connection.commit();
@@ -60,7 +61,7 @@ public class EngineJdbcRepository implements InterfaceRepository<Engine> {
     }
 
     @Override
-    public Engine getById(final String id) {
+    public Optional<Engine> getById(final String id) {
         Engine engine = null;
         final String getEngine = "SELECT * FROM engines WHERE idEngine = ?;";
         try (PreparedStatement getEngineById = connection.prepareStatement(getEngine)) {
@@ -73,7 +74,7 @@ public class EngineJdbcRepository implements InterfaceRepository<Engine> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return engine;
+        return Optional.ofNullable(engine);
     }
 
     @Override

@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,6 +17,7 @@ public class Order {
     private final String id;
     private List<Car> cars;
     private final Date date;
+    private List<String> carId;
 
     public Order() {
         this.id = UUID.randomUUID().toString();
@@ -28,6 +30,9 @@ public class Order {
     }
 
     public void addCar(Car car){
+        if(cars == null){
+            cars = new ArrayList<>();
+        }
         if(car != null){
             cars.add(car);
         }
@@ -40,5 +45,10 @@ public class Order {
         for (Car car : cars){
             CarService.printCar(car);
         }
+    }
+
+    public void printPreview(){
+        System.out.println("Order :\n\tid: " + this.getId() + ";\n\tdate: " + this.getDate() +
+                            ";\n\tauto count: " + this.carId.size());
     }
 }

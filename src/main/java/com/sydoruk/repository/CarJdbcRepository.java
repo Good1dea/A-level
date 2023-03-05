@@ -5,6 +5,7 @@ import com.sydoruk.model.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CarJdbcRepository implements InterfaceRepository <Car> {
 
@@ -58,9 +59,9 @@ public class CarJdbcRepository implements InterfaceRepository <Car> {
     }
 
     @Override
-    public void save(final Car car) {
+    public void save(final Car object) {
         try {
-            save(car, null);
+            save(object, null);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -87,7 +88,11 @@ public class CarJdbcRepository implements InterfaceRepository <Car> {
     }
 
     @Override
-    public Car getById(final String id) {
+    public Optional<Car> getById(String id) {
+        return Optional.empty();
+    }
+
+    public Car carGetById(final String id) {
         Car car = null;
         final String getById = "SELECT * FROM cars " +
                 "FULL JOIN engines ON cars.engineID = engines.idEngine " +
@@ -156,4 +161,6 @@ public class CarJdbcRepository implements InterfaceRepository <Car> {
         }
         return car;
     }
+
+
 }
