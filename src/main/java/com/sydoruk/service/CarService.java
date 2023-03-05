@@ -4,6 +4,7 @@ import com.sydoruk.annotation.Singleton;
 import com.sydoruk.exception.UserInputException;
 import com.sydoruk.model.*;
 import com.sydoruk.repository.CarArrayRepository;
+import com.sydoruk.repository.InterfaceRepository;
 import com.sydoruk.util.RandomGenerator;
 
 import java.util.*;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 public class CarService {
 
     private final CarArrayRepository carArrayRepository = new CarArrayRepository();
+
     private final Random random = new Random();
     private final String[] manufacturers = {"Suzuki", "Audi", "ZAZ", "Ford", "Toyota", "Fiat", "Volvo", "Tesla",
             "Volkswagen", "Subaru", "Dodge", "Ferrari", "Cadillac", "BMW", "Bugatti", "Jaguar"};
@@ -29,6 +31,7 @@ public class CarService {
     }
 
     public CarService(CarArrayRepository repository) {
+
     }
 
     public void printManufacturerAndCount(final Car car){
@@ -147,12 +150,14 @@ public class CarService {
         if (id == null || id.isEmpty()) {
             return null;
         }
+
         return carArrayRepository.carGetById(id);
+
     }
 
     public void delete(final String id) {
         if (id != null && !id.isEmpty()) {
-            carArrayRepository.delete(id);
+            carRepository.delete(id);
         }
     }
 
