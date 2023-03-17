@@ -1,19 +1,19 @@
 package com.sydoruk;
 
-import com.sydoruk.util.MultiThreadFillArray;
-import com.sydoruk.util.MultiThreadSumArray;
+import com.sydoruk.model.Car;
+import com.sydoruk.service.CarService;
+import com.sydoruk.util.ReadFromJsonXml;
 
-import java.util.Arrays;
+import java.io.IOException;
 
 public class Main {
 
-    public static void main(String[] arg) {
-        final int[] array = MultiThreadFillArray.getInstance().fillArray();
-        System.out.println("Array contents:");
-        System.out.println(Arrays.toString(array));
-        int numThreads = 4;
-        final int sum = MultiThreadSumArray.getInstance(array, numThreads).sumInParallel();
-        System.out.println();
-        System.out.println("Sum of array elements in " + numThreads + " threads: " + sum);
+    public static void main(String[] arg) throws IOException {
+        final Car carOne = CarService.getInstance().createCarFromFile(ReadFromJsonXml.getInstance().readFromJsonFile());
+        System.out.println("Car from json");
+        CarService.printCar(carOne);
+        final Car carTwo = CarService.getInstance().createCarFromFile(ReadFromJsonXml.getInstance().readFromXmlFile());
+        System.out.println("Car from xml");
+        CarService.printCar(carTwo);
     }
 }

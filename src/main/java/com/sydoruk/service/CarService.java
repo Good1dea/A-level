@@ -6,6 +6,7 @@ import com.sydoruk.model.*;
 import com.sydoruk.repository.CarArrayRepository;
 import com.sydoruk.repository.InterfaceRepository;
 import com.sydoruk.util.RandomGenerator;
+import com.sydoruk.util.ReadFromJsonXml;
 
 import java.util.*;
 import java.util.function.Function;
@@ -26,12 +27,39 @@ public class CarService {
         this.carArrayRepository = carArrayRepository;
     } */
 
-    public CarService(){
+    private static CarService instance;
 
+    private CarService() {
+    }
+
+    public static CarService getInstance() {
+        if (instance == null) {
+            instance = new CarService();
+        }
+        return instance;
     }
 
     public CarService(CarArrayRepository repository) {
 
+    }
+
+    public Car createCarFromFile(final Map<String, String> mapFromFile) {
+        final PassengerCar car = new PassengerCar();
+        final Engine engine = new Engine();
+        if( mapFromFile != null) {
+            car.setId(mapFromFile.get("id"));
+            car.setManufacturer(mapFromFile.get("manufacturer"));
+            car.setColor(Color.valueOf(mapFromFile.get("color")));
+            car.setCount(Integer.parseInt(mapFromFile.get("count")));
+            car.setPrice(Integer.parseInt(mapFromFile.get("price")));
+            car.setPassengerCount(Integer.parseInt(mapFromFile.get("passengerCount")));
+            engine.setPower(Integer.parseInt(mapFromFile.get("power")));
+            engine.setType(mapFromFile.get("type"));
+            car.setEngine(engine);
+        } else {
+            System.out.println("Car not created");
+        }
+        return car;
     }
 
     public void printManufacturerAndCount(final Car car){

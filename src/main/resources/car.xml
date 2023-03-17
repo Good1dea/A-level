@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<Car>
+    <manufacturer>Suzuki</manufacturer>
+    <engine>
+        <type>GASOLIN</type>
+        <power>500</power>
+    </engine>
+    <color>TURQUOISE</color>
+    <count>22</count>
+    <price>88888</price>
+    <id>32k4-5698-5yt9-2288</id>
+    <passengerCount>5</passengerCount>
+</Car>
