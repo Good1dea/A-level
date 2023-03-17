@@ -4,6 +4,7 @@ import com.sydoruk.annotation.Singleton;
 import com.sydoruk.exception.UserInputException;
 import com.sydoruk.model.*;
 import com.sydoruk.repository.CarArrayRepository;
+import com.sydoruk.repository.InterfaceRepository;
 import com.sydoruk.util.RandomGenerator;
 import com.sydoruk.util.ReadFromJsonXml;
 
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 @Singleton
 public class CarService {
 
-    private final CarArrayRepository carArrayRepository = new CarArrayRepository();
+    private final CarArrayRepository carArrayRepository = CarArrayRepository.getInstance();
     private final Random random = new Random();
     private final String[] manufacturers = {"Suzuki", "Audi", "ZAZ", "Ford", "Toyota", "Fiat", "Volvo", "Tesla",
             "Volkswagen", "Subaru", "Dodge", "Ferrari", "Cadillac", "BMW", "Bugatti", "Jaguar"};
@@ -28,16 +29,14 @@ public class CarService {
     private static CarService instance;
 
     private CarService() {
+
     }
 
-    public static CarService getInstance() {
+    public static synchronized CarService getInstance() {
         if (instance == null) {
-            instance = new CarService();
+            return new CarService();
         }
         return instance;
-    }
-
-    public CarService(CarArrayRepository repository) {
     }
 
     public Car createCarFromFile(final Map<String, String> mapFromFile) {
@@ -103,7 +102,7 @@ public class CarService {
             //car.restore();
         car.setCount(random.nextInt(1, 6));
         //System.out.println(car.toString());
-           // carArrayRepository.save(car);
+        carArrayRepository.save(car);
         return car;
     }
 
@@ -167,8 +166,12 @@ public class CarService {
         System.out.println(Arrays.toString(all));
     }
 
-    public Car[] getAll() {
+    public Car[] getAllCars() {
         return carArrayRepository.getAllCars();
+    }
+
+    public List<Car> getAll() {
+        return Arrays.stream(carArrayRepository.getAllCars()).toList();
     }
 
     public Car find(final String id) {
